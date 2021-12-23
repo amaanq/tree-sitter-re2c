@@ -1,11 +1,4 @@
-[
-  (body)
-  (named_definition)
-  (ordinary_rule)
-  (conditional_rule)
-  (use)
-  (include)
-] @indent
+(re2c) @indent
 
 [
  (comment)

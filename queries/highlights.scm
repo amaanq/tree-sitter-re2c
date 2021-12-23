@@ -1,8 +1,3 @@
-(name) @type
-(option_name) @constant.builtin
-(block_name) @constant
-(label) @label
-
 ;;
 ;; Punctuations
 ;; ============
@@ -121,14 +116,24 @@
 ] @keyword
 
 ;;
-;; Configuration
+;; Names
 ;; =============
+(name) @type
+
+(block_name) @constant
+
+(label) @label
+
+(option_name) @constant.builtin
+
 ((option_name) @clean @constant.macro
  (#match? @clean "^YY" ))
 
 ;;
 ;; Literals
 ;; -------
+(regex) @string.regex
+
 [
   (dstring) ; case   sensitive
   (sstring) ; case insensitive
@@ -151,8 +156,6 @@
   (stag)
   (mtag)
 ] @property
-
-(literal) @character
 
 ;;
 ;; Comments and error
