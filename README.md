@@ -4,7 +4,7 @@
 
    The tree-sitter-re2c parser is intended to be injected into block comments of languagues supported by [re2c](https://re2c.org/).
 
-   The parser assumes the block comments delimiters (`\\*` and `*\\`) are not included in the input.
+   The parser assumes the block comments delimiters (`\*` and `*\`) are not included in the input.
 
    Injection query
    ----------------
