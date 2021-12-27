@@ -416,6 +416,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "input_conf",
             "named": true
           },
@@ -496,6 +500,11 @@
     }
   },
   {
+    "type": "dstring",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "empty_class_conf",
     "named": true,
     "fields": {}
@@ -504,6 +513,46 @@
     "type": "encoding_policy",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "field_expression",
+    "named": true,
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "field": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "field_identifier",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "->",
+            "named": false
+          },
+          {
+            "type": ".",
+            "named": false
+          }
+        ]
+      }
+    }
   },
   {
     "type": "format_directive",
@@ -1119,6 +1168,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "input_conf",
             "named": true
           },
@@ -1180,6 +1233,10 @@
           },
           {
             "type": "encoding_policy",
+            "named": true
+          },
+          {
+            "type": "field_expression",
             "named": true
           },
           {
@@ -1247,6 +1304,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "input_conf",
             "named": true
           },
@@ -1288,6 +1349,10 @@
           },
           {
             "type": "encoding_policy",
+            "named": true
+          },
+          {
+            "type": "field_expression",
             "named": true
           },
           {
@@ -1335,6 +1400,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "input_conf",
             "named": true
           },
@@ -1376,6 +1445,10 @@
           },
           {
             "type": "encoding_policy",
+            "named": true
+          },
+          {
+            "type": "field_expression",
             "named": true
           },
           {
@@ -1443,6 +1516,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "input_conf",
             "named": true
           },
@@ -1504,6 +1581,10 @@
           },
           {
             "type": "encoding_policy",
+            "named": true
+          },
+          {
+            "type": "field_expression",
             "named": true
           },
           {
@@ -1571,6 +1652,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "input_conf",
             "named": true
           },
@@ -1615,6 +1700,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "input_conf",
             "named": true
           },
@@ -1656,6 +1745,10 @@
           },
           {
             "type": "encoding_policy",
+            "named": true
+          },
+          {
+            "type": "field_expression",
             "named": true
           },
           {
@@ -1723,6 +1816,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "input_conf",
             "named": true
           },
@@ -1784,6 +1881,10 @@
           },
           {
             "type": "encoding_policy",
+            "named": true
+          },
+          {
+            "type": "field_expression",
             "named": true
           },
           {
@@ -1851,6 +1952,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "input_conf",
             "named": true
           },
@@ -1912,6 +2017,10 @@
           },
           {
             "type": "encoding_policy",
+            "named": true
+          },
+          {
+            "type": "field_expression",
             "named": true
           },
           {
@@ -1979,6 +2088,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "input_conf",
             "named": true
           },
@@ -2043,6 +2156,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "input_conf",
             "named": true
           },
@@ -2077,6 +2194,11 @@
         ]
       }
     }
+  },
+  {
+    "type": "sstring",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "stag",
@@ -2222,6 +2344,10 @@
     "named": false
   },
   {
+    "type": "->",
+    "named": false
+  },
+  {
     "type": ".",
     "named": false
   },
@@ -2338,10 +2464,6 @@
     "named": false
   },
   {
-    "type": "dstring",
-    "named": true
-  },
-  {
     "type": "empty",
     "named": true
   },
@@ -2362,6 +2484,10 @@
     "named": false
   },
   {
+    "type": "field_identifier",
+    "named": true
+  },
+  {
     "type": "flags",
     "named": false
   },
@@ -2379,6 +2505,10 @@
   },
   {
     "type": "hex_digit",
+    "named": true
+  },
+  {
+    "type": "identifier",
     "named": true
   },
   {
@@ -2452,10 +2582,6 @@
   {
     "type": "separator",
     "named": false
-  },
-  {
-    "type": "sstring",
-    "named": true
   },
   {
     "type": "startlabel",

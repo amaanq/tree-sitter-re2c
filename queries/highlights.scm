@@ -15,6 +15,7 @@
   "/"
   "|"
   "\\"
+  "->"
   "^"
 ] @operator
 
@@ -84,11 +85,13 @@
 ] @constant.builtin
 
 [
-  "."
+  "." @clean
   (default)
   (end_of_input)
 ] @constant.macro
 
+(field_expression
+  "." @clean @operator)
 
 (condition
   (any) @clean @constant.macro)
@@ -128,6 +131,11 @@
 
 ((option_name) @clean @constant.macro
  (#match? @clean "^YY" ))
+
+(field_expression
+  argument: (identifier) @variable)
+
+(field_identifier) @property
 
 ;;
 ;; Literals

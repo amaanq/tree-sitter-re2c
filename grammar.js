@@ -17,6 +17,7 @@ module.exports = grammar({
     $._name,
     $._label,
     $._block_name,
+    $._field_identifier,
     $._string,
     $._filename,
     $._rule,
@@ -212,8 +213,20 @@ module.exports = grammar({
       $.api_style,
       $._string,
       $.number,
-      $._name
+      $._name,
+      // C primaries
+      $.field_expression,
     )),
+
+    // only sypport very simple (yet the most common)
+    // field expressions
+    field_expression: $ => seq(
+      field('argument', $.identifier),
+      field('operator', choice('.', '->')),
+      field('field', $._field_identifier)
+    ),
+
+    _field_identifier: $ => alias($.identifier, $.field_identifier),
 
     //
     // Configuration constants
