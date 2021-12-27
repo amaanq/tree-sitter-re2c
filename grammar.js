@@ -78,93 +78,32 @@ module.exports = grammar({
       $.ignore_block,
     ),
 
-    global_block: $ => seq(
-      '!re2c',
-      optional($._block_name),
-      optional($.body),
-    ),
-
-    local_block: $ => seq(
-      suffix('!local'),
-      optional($._block_name),
-      optional($.body),
-    ),
-
-    rules_block: $ => seq(
-      suffix('!rules'),
-      optional($._block_name),
-      optional($.body),
-    ),
+    global_block : $ => seq('!re2c',          optional($._block_name), optional($.body)),
+    local_block  : $ => seq(suffix('!local'), optional($._block_name), optional($.body)),
+    rules_block  : $ => seq(suffix('!rules'), optional($._block_name), optional($.body)),
 
     _block_name: $ => seq(
-      immd(':'),
-      alias(immd(NAME), $.block_name),
+      immd(':'), alias(immd(NAME), $.block_name),
     ),
 
     //
     // Block directives
     // ----------------
-    use_block: $ => seq(
-      suffix('!use'),
-      optional($._block_name),
-    ),
+    use_block       : $ => seq(suffix('!use')       , optional($._block_name)),
+    max_block       : $ => seq(suffix('!max')       , optional($.block_list)) ,
+    maxnmatch_block : $ => seq(suffix('!maxnmatch') , optional($.block_list)) ,
+    types_block     : $ => seq(suffix('!types')     , optional($.block_list)) ,
+    getstate_block  : $ => seq(suffix('!getstate')  , optional($.block_list)) ,
+    stags_block     : $ => seq(suffix('!stags')     , optional($.block_list)  , repeat($._tag_directive)) ,
+    mtags_block     : $ => seq(suffix('!mtags')     , optional($.block_list)  , repeat($._tag_directive)) ,
 
-    max_block: $ => seq(
-      suffix('!max'),
-      optional($.block_list),
-    ),
+    include_block   : $ => seq(suffix('!include')   , / /, $._filename),
 
-    maxnmatch_block: $ => seq(
-      suffix('!maxnmatch'),
-      optional($.block_list),
-    ),
+    header_on_block : $ => seq(suffix(suffix('!header'),'on')),
+    header_off_block: $ => seq(suffix(suffix('!header'),'off')),
 
-    stags_block: $ => seq(
-      suffix('!stags'),
-      optional($.block_list),
-      optional(seq(
-        $._tag_directive,
-        optional($._tag_directive)
-      ))
-    ),
-
-    mtags_block: $ => seq(
-      suffix('!mtags'),
-      optional($.block_list),
-      optional(seq(
-        $._tag_directive,
-        optional($._tag_directive)
-      ))
-    ),
-
-    types_block: $ => seq(
-      suffix('!types'),
-      optional($.block_list),
-    ),
-
-    getstate_block: $ => seq(
-      suffix('!getstate'),
-      optional($.block_list),
-    ),
-
-    header_on_block: $ => seq(
-      suffix(suffix('!header'),'on'),
-    ),
-
-    header_off_block: $ => seq(
-      suffix(suffix('!header'),'off'),
-    ),
-
-    include_block: $ => seq(
-      suffix('!include'),
-      / /,
-      $._filename
-    ),
-
-    ignore_block: $ => token(seq(
-      suffix('!ignore'),
-      LEX_BLOCK_END
-    )),
+    // NOTE: Single token
+    ignore_block    : $ => token(seq(suffix('!ignore'), LEX_BLOCK_END)),
 
     block_list: $ => repeat1($._block_name),
 
@@ -178,17 +117,11 @@ module.exports = grammar({
     ),
 
     format_directive: $ => seq(
-      'format',
-      '=',
-      field('format', $._string),
-      ';'
+      'format', '=', field('format', $._string), ';'
     ),
 
     separator_directive: $ => seq(
-      'separator',
-      '=',
-      field('separator', $._string),
-      ';'
+      'separator', '=', field('separator', $._string), ';'
     ),
 
     //
@@ -208,10 +141,7 @@ module.exports = grammar({
     // LINT: Cannot be recursive
     // LINT: Redefinition is an error
     named_definition: $ => seq(
-      field('name', $._name),
-      '=',
-      field('value', $.regex),
-      ';'
+      field('name', $._name), '=', field('value', $.regex), ';'
     ),
 
     _name: $ => alias($.identifier, $.name),
@@ -254,136 +184,28 @@ module.exports = grammar({
       )),
     ),
 
-    set_flags: $ => seq(
-      immd('flags'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    define: $ => seq(
-      immd('define'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_cond: $ => seq(
-      immd('cond'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_label: $ => seq(
-      immd('label'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_variable: $ => seq(
-      immd('variable'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_yych: $ => seq(
-      immd('yych'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_state: $ => seq(
-      immd('state'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_yybm: $ => seq(
-      immd('yybm'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_cgoto: $ => seq(
-      immd('cgoto'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_api: $ => seq(
-      immd('api'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_tags: $ => seq(
-      immd('tags'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_indent: $ => seq(
-      immd('indent'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_yyfill: $ => seq(
-      immd('yyfill'),
-      $._option_name,
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
+    set_flags          : $ => seq(immd('flags')    , $._option_name , '=' , $._conf_value),
+    define             : $ => seq(immd('define')   , $._option_name , '=' , $._conf_value),
+    set_cond           : $ => seq(immd('cond')     , $._option_name , '=' , $._conf_value),
+    set_label          : $ => seq(immd('label')    , $._option_name , '=' , $._conf_value),
+    set_variable       : $ => seq(immd('variable') , $._option_name , '=' , $._conf_value),
+    set_yych           : $ => seq(immd('yych')     , $._option_name , '=' , $._conf_value),
+    set_state          : $ => seq(immd('state')    , $._option_name , '=' , $._conf_value),
+    set_yybm           : $ => seq(immd('yybm')     , $._option_name , '=' , $._conf_value),
+    set_cgoto          : $ => seq(immd('cgoto')    , $._option_name , '=' , $._conf_value),
+    set_api            : $ => seq(immd('api')      , $._option_name , '=' , $._conf_value),
+    set_tags           : $ => seq(immd('tags')     , $._option_name , '=' , $._conf_value),
+    set_indent         : $ => seq(immd('indent')   , $._option_name , '=' , $._conf_value),
+    set_yyfill         : $ => seq(immd('yyfill')   , $._option_name , '=' , $._conf_value),
     // configurations without options
+    set_eof            : $ => seq(immd('eof')                       , '=' , $._conf_value) ,
+    set_sentinel       : $ => seq(immd('sentinel')                  , '=' , $._conf_value) ,
+    set_condprefix     : $ => seq(immd('condprefix')                , '=' , $._conf_value) ,
+    set_condenumprefix : $ => seq(immd('condenumprefix')            , '=' , $._conf_value) ,
+    set_labelprefix    : $ => seq(immd('labelprefix')               , '=' , $._conf_value) ,
+    set_startlabel     : $ => seq(immd('startlabel')                , '=' , $._conf_value) ,
 
-    set_eof: $ => seq(
-      immd('eof'),
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_sentinel: $ => seq(
-      immd('sentinel'),
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_condprefix: $ => seq(
-      immd('condprefix'),
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_condenumprefix: $ => seq(
-      immd('condenumprefix'),
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_labelprefix: $ => seq(
-      immd('labelprefix'),
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    set_startlabel: $ => seq(
-      immd('startlabel'),
-      '=',
-      field('value', $._conf_rhs),
-    ),
-
-    _conf_rhs: $ =>  choice(
+    _conf_value: $ =>  field('value',choice(
       $.encoding_policy,
       $.input_conf,
       $.empty_class_conf,
@@ -391,7 +213,7 @@ module.exports = grammar({
       $._string,
       $.number,
       $._name
-    ),
+    )),
 
     //
     // Configuration constants
@@ -517,11 +339,7 @@ module.exports = grammar({
 
     // alternation as a list
     alternation: $ => seq(
-      repeat1(seq(
-        $._branch,
-        field('operator','|'),
-      )),
-      $._branch
+      repeat1(seq($._branch, field('operator','|'))), $._branch
     ),
 
     _branch: $ => field(
@@ -552,8 +370,7 @@ module.exports = grammar({
 
     // %right as posix regex
     concat: $ => seq(
-      $._cat_expr,
-      repeat1($._cat_expr),
+      $._cat_expr, repeat1($._cat_expr),
     ),
 
     _cat_expr: $ => choice(
@@ -720,9 +537,6 @@ module.exports = grammar({
       )
     ))),
 
-    //
-    // Line
-    //
     // TODO: shall be injection (is a C preprocessor line directive)
     linedir: $ =>  /#line.*\n/,
 
