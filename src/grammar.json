@@ -3167,8 +3167,45 @@
       }
     },
     "linedir": {
-      "type": "PATTERN",
-      "value": "#line.*\\n"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#"
+        },
+        {
+          "type": "STRING",
+          "value": "line"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_filename"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_linenum"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\r?\\n"
+        }
+      ]
+    },
+    "_linenum": {
+      "type": "FIELD",
+      "name": "linenum",
+      "content": {
+        "type": "SYMBOL",
+        "name": "number"
+      }
     }
   },
   "extras": [
@@ -3207,7 +3244,8 @@
     "_clist",
     "_empty",
     "_char_cls_expr",
-    "_bracket_literal"
+    "_bracket_literal",
+    "_linenum"
   ],
   "supertypes": [
     "_atom",

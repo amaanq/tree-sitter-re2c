@@ -29,6 +29,7 @@ module.exports = grammar({
     $._empty,
     $._char_cls_expr,
     $._bracket_literal,
+    $._linenum
   ],
 
   conflicts: $ => [
@@ -299,9 +300,7 @@ module.exports = grammar({
     ),
 
     action: $ => seq(
-      '{',
-      optional($.code_block),
-      prec.dynamic(1,'}'),
+      '{', optional($.code_block), prec.dynamic(1,'}'),
     ),
 
     code_block: $ => repeat1($._code_in_braces),
@@ -551,8 +550,15 @@ module.exports = grammar({
       )
     ))),
 
-    // TODO: shall be injection (is a C preprocessor line directive)
-    linedir: $ =>  /#line.*\n/,
+    linedir: $ => seq(
+      '#','line',
+      $._filename,
+      optional($._linenum),
+      /\r?\n/
+    ),
+
+    // LINT: shall be positive
+    _linenum: $ => field('linenum', $.number),
 
   }
 

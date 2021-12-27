@@ -680,6 +680,36 @@
     }
   },
   {
+    "type": "linedir",
+    "named": true,
+    "fields": {
+      "filename": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dstring",
+            "named": true
+          },
+          {
+            "type": "sstring",
+            "named": true
+          }
+        ]
+      },
+      "linenum": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "literal",
     "named": true,
     "fields": {}
@@ -2453,11 +2483,11 @@
   },
   {
     "type": "default",
-    "named": true
+    "named": false
   },
   {
     "type": "default",
-    "named": false
+    "named": true
   },
   {
     "type": "define",
@@ -2525,19 +2555,19 @@
   },
   {
     "type": "label",
-    "named": false
+    "named": true
   },
   {
     "type": "label",
-    "named": true
+    "named": false
   },
   {
     "type": "labelprefix",
     "named": false
   },
   {
-    "type": "linedir",
-    "named": true
+    "type": "line",
+    "named": false
   },
   {
     "type": "match-empty",

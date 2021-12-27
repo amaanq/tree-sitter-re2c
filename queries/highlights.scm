@@ -66,6 +66,8 @@
   "!include"
 ] @include
 
+(linedir) @constant.macro
+
 ;;
 ;; Constants
 ;; =========
