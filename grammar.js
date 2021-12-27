@@ -295,6 +295,7 @@ module.exports = grammar({
 
     _code_in_braces: $ => choice(
       // comments are consumed by (comment) in this parser
+      // so, there is no need to deal with them here
       seq(/"([^"\\\n]|\\.)*"/),
       seq(/'([^'\\\n]|\\.)*'/),
       seq(/[^{}"'\/]+/),
@@ -456,8 +457,8 @@ module.exports = grammar({
     //
     // String
     // ------
-    dstring: $ => /"([^\n\\"]|\\.)*"/,
-    sstring: $ => /'([^\n\\']|\\.)*'/,
+    dstring: $ => seq(/"([^\n\\"]|\\.)*"?/),
+    sstring: $ => seq(/'([^\n\\']|\\.)*"?/),
 
     _string: $ => choice(
       $.dstring, // case sensitive
