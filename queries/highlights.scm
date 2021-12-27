@@ -138,8 +138,16 @@
 (field_identifier) @property
 
 ;;
+;; Configurations
+;; ==============
+(define
+  option: (option_name) @_c
+   value: (dstring) @type
+   (#eq? @_c "YYCTYPE"))
+
+;;
 ;; Literals
-;; -------
+;; ========
 (regex) @string.regex
 
 [
