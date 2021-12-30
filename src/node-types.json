@@ -224,6 +224,11 @@
     }
   },
   {
+    "type": "comment",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "concat",
     "named": true,
     "fields": {},
@@ -2456,10 +2461,6 @@
   {
     "type": "cgoto",
     "named": false
-  },
-  {
-    "type": "comment",
-    "named": true
   },
   {
     "type": "cond",

@@ -2659,7 +2659,7 @@
       "members": [
         {
           "type": "PATTERN",
-          "value": "'([^\\n\\\\']|\\\\.)*\"?"
+          "value": "'([^\\n\\\\']|\\\\.)*'?"
         }
       ]
     },
@@ -3125,14 +3125,14 @@
       ]
     },
     "comment": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": -1,
-        "content": {
-          "type": "CHOICE",
-          "members": [
-            {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 2,
+            "content": {
               "type": "SEQ",
               "members": [
                 {
@@ -3144,8 +3144,15 @@
                   "value": "(\\\\(.|\\r?\\n)|[^\\\\\\n])*"
                 }
               ]
-            },
-            {
+            }
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": -1,
+            "content": {
               "type": "SEQ",
               "members": [
                 {
@@ -3162,9 +3169,9 @@
                 }
               ]
             }
-          ]
+          }
         }
-      }
+      ]
     },
     "linedir": {
       "type": "SEQ",

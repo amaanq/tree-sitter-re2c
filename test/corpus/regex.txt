@@ -134,3 +134,21 @@ Regex/character class: Unexpected "]" (ERROR)
           (character_class
             (literal)))
         (ERROR)))))
+
+==================================================
+Regex/literal/strings
+==================================================
+!re2c
+  x = 'a'"b";
+
+---
+
+(re2c
+  (global_block
+    (body
+      (named_definition
+        name: (name)
+        value: (regex
+          (concat
+            (sstring)
+            (dstring)))))))

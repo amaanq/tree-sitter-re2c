@@ -470,7 +470,7 @@ module.exports = grammar({
     // String
     // ------
     dstring: $ => seq(/"([^\n\\"]|\\.)*"?/),
-    sstring: $ => seq(/'([^\n\\']|\\.)*"?/),
+    sstring: $ => seq(/'([^\n\\']|\\.)*'?/),
 
     _string: $ => choice(
       $.dstring, // case sensitive
