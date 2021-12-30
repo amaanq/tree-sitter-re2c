@@ -541,14 +541,14 @@ module.exports = grammar({
     // Comments
     // ========
     // From tree-sitter-c
-    comment: $ => token(prec(-1,choice(
-      seq('//', /(\\(.|\r?\n)|[^\\\n])*/),
-      seq(
+    comment: $ => choice(
+      token(prec(2,seq('//', /(\\(.|\r?\n)|[^\\\n])*/))),
+      token(prec(-1,seq(
         '/*',
         /[^*]*\*+([^/*][^*]*\*+)*/,
         '/'
-      )
-    ))),
+      )))
+    ),
 
     linedir: $ => seq(
       '#','line',
