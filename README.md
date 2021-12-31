@@ -13,11 +13,13 @@
 
    On the re2c/queries/injections.scm:
    ```scm
-   ((host_lang) @c @combined
-    (#match? @c "^#include"))
+    (re2c
+    . (host_lang) @_c
+      (#match? @_c "^[ \t]*#include")) @c
 
-   ((host_lang) @go @combined
-    (#match? @go "^package main$"))
+    (re2c
+    . (host_lang) @_c
+      (#match? @_c "^[ \t]*#package main")) @go
    ```
 
    References

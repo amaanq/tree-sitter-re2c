@@ -1,6 +1,3 @@
-((host_lang) @c @combined
-  (#match? @c "^[ \t]*#include"))
-
-((host_lang) @go @combined
-  (#match? @go "[ \t]*package main"))
-
+(re2c
+. (host_lang) @_c
+  (#match? @_c "^[ \t]*#include")) @c
