@@ -1,11 +1,10 @@
 ====================================
 Rule/action/code block: Minimal
 ====================================
-!re2c
+/*!re2c
   foo {}
   bar { }
-  baz { foobar(); }
-
+  baz { foobar(); }*/
 ---
 
 (re2c
@@ -19,21 +18,21 @@ Rule/action/code block: Minimal
         (pattern
           (regex (name)))
         (action
-          (code_block)))
+          (host_lang)))
       (ordinary_rule
         (pattern
           (regex (name)))
         (action
-          (code_block))))))
+          (host_lang))))))
 
 ======================================================
 Rule/action/code block: Nested blocks (matching pairs)
 ======================================================
-!re2c
+/*!re2c
   foo {{}}
   bar {{}{}}
   baz {{{}}{{}}{{}}}
-
+*/
 ---
 
 (re2c
@@ -43,26 +42,26 @@ Rule/action/code block: Nested blocks (matching pairs)
         (pattern
           (regex (name)))
         (action
-          (code_block)))
+          (host_lang)))
       (ordinary_rule
         (pattern
           (regex (name)))
         (action
-          (code_block)))
+          (host_lang)))
       (ordinary_rule
         (pattern
           (regex (name)))
         (action
-          (code_block))))))
+          (host_lang))))))
 
 ===============================================================
 Rule/action/code block: Nested blocks (missing closing bracket)
 ===============================================================
-!re2c
+/*!re2c
   foo {{}
   bar {{{}
   baz {{{{{{}
-
+*/
 ---
 
 (re2c
@@ -72,25 +71,25 @@ Rule/action/code block: Nested blocks (missing closing bracket)
         (pattern
           (regex (name)))
         (action
-          (code_block)))
+          (host_lang)))
       (ordinary_rule
         (pattern
           (regex (name)))
         (action
-          (code_block)))
+          (host_lang)))
       (ordinary_rule
         (pattern
           (regex (name)))
         (action
-          (code_block))))))
+          (host_lang))))))
 
 
 ===============================================================
 Rule/action/code block: Nesting {foo{}bar}
 ===============================================================
-!re2c
+/*!re2c
   foo {foo{}bar}
-
+*/
 ---
 
 (re2c
@@ -100,4 +99,4 @@ Rule/action/code block: Nesting {foo{}bar}
         (pattern
           (regex (name)))
         (action
-          (code_block))))))
+          (host_lang))))))

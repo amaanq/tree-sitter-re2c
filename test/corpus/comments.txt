@@ -1,10 +1,9 @@
 ====================================
 Comment, conflict, lookahead operator (\)  I
 ====================================
-!re2c
+/*!re2c
   foo = bar / bar // 
-;
-
+;*/
 ---
 
 (re2c
@@ -21,10 +20,9 @@ Comment, conflict, lookahead operator (\)  I
 ====================================
 Comment, conflict, lookahead operator (\) II
 ====================================
-!re2c
+/*!re2c
   foo = bar / bar //
-;
-
+;*/
 ---
 
 (re2c
@@ -41,10 +39,9 @@ Comment, conflict, lookahead operator (\) II
 ====================================
 Comment, conflict, lookahead operator (\) III
 ====================================
-!re2c
+/*!re2c
   foo = bar / bar //f
-;
-
+;*/
 ---
 
 (re2c
@@ -61,10 +58,9 @@ Comment, conflict, lookahead operator (\) III
 ====================================
 Comment, conflict, lookahead operator (\) IV
 ====================================
-!re2c
+/*!re2c
   foo = bar / bar //ff
-;
-
+;*/
 ---
 
 (re2c
@@ -81,10 +77,9 @@ Comment, conflict, lookahead operator (\) IV
 ====================================
 Comment, conflict, lookahead operator (\)  V
 ====================================
-!re2c
+/*!re2c
   foo = bar / bar //ff
-;
-
+;*/
 ---
 
 (re2c

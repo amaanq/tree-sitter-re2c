@@ -47,18 +47,18 @@
 ;; ========
 [
   "re2c"
-  "!re2c"
-  "!local"
-  "!rules"
+  "re2c"
+  "local"
+  "rules"
 ] @namespace
 
 [
-  "!max"
-  "!maxnmatch"
-  "!mtags"
-  "!stags"
-  "!getstate"
-  "!header"
+  "max"
+  "maxnmatch"
+  "mtags"
+  "stags"
+  "getstate"
+; "header"
 ] @keyword
 
 [

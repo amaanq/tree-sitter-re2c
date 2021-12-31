@@ -23,5 +23,14 @@
   },
   "scripts": {
     "test": "tree-sitter test"
-  }
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.re",
+      "file-types": [
+        "re"
+      ]
+    }
+  ]
+
 }

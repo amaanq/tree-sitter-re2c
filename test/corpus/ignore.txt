@@ -1,8 +1,9 @@
 ======================
 Ignore
 ======================
-!ignore:re2c
+/*!ignore:re2c
   fooo barr !re2c
+*/
 ---
 
 (re2c

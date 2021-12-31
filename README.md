@@ -2,25 +2,25 @@
    Tree-sitter for re2c
    ====================
 
-   The tree-sitter-re2c parser is intended to be injected into block comments of languagues supported by [re2c](https://re2c.org/).
+   The tree-sitter-re2c is a [re2c](https://re2c.org/) parser for tree-sitter.
 
-   The parser assumes the block comments delimiters (`\*` and `*\`) are not included in the input.
+   Injection
+   ---------
 
-   Injection query
-   ----------------
+   The host languague shall be injected in the `host_lang` rule of this grammar.
 
-   To inject re2c parser in a block comment of any languague, add the following code to the injection query of the languague you want it to be injected (not of re2c).
+   Example of how this can be done with nvim-tree-sitter:
+
+   On the re2c/queries/injections.scm:
    ```scm
-    ((comment) @re2c
-     (#match? @re2c "\\\*!(.*:)?re2c") 
-     (#offset! @re2c 0 2 0 -2))
-   ```
+   ((host_lang) @c @combined
+    (#match? @c "^#include"))
 
-   Some languagues may use another name for block comment rules.
+   ((host_lang) @go @combined
+    (#match? @go "^package main$"))
+   ```
 
    References
    ----------
    - [re2c manual](https://re2c.org/manual/manual_c.html)
    - [re2c lexer](https://github.com/skvadrik/re2c/blob/master/src/parse/lex.re)
-
-

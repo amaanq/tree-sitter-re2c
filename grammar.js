@@ -10,7 +10,7 @@ module.exports = grammar({
 
   extras: $ => [
     /\s/,
-    $.comment
+    $.comment,
   ],
 
   inline: $ => [
@@ -61,28 +61,35 @@ module.exports = grammar({
 
   rules: {
 
-    // Before injecting, remove the block comments delimiters.
-    // This can be done with a offset of (0,2,0,-2) on the injection.
-    re2c: $ => $._block,
+    re2c: $ => repeat(choice(
+      $.host_lang,
+      $._block,
+    )),
 
-    _block: $ => choice(
-      $.global_block,
-      $.local_block,
-      $.rules_block,
-      $.use_block,
-      $.max_block,
-      $.maxnmatch_block,
-      $.stags_block,
-      $.mtags_block,
-      $.getstate_block,
-      $.header_on_block,
-      $.header_off_block,
-      $.ignore_block,
+    host_lang: $ => token(/([^\/]|\/[^*]|\/\*[^!])+/),
+
+    _block: $ => seq(
+      '\/*!',
+      choice(
+        $.global_block,
+        $.local_block,
+        $.rules_block,
+        $.use_block,
+        $.max_block,
+        $.maxnmatch_block,
+        $.stags_block,
+        $.mtags_block,
+        $.getstate_block,
+        $.header_on_block,
+        $.header_off_block,
+        $.ignore_block,
+      ),
+      '*\/'
     ),
 
-    global_block : $ => seq('!re2c',          optional($._block_name), optional($.body)),
-    local_block  : $ => seq(suffix('!local'), optional($._block_name), optional($.body)),
-    rules_block  : $ => seq(suffix('!rules'), optional($._block_name), optional($.body)),
+    global_block : $ => seq(immd('re2c'),    optional($._block_name), optional($.body)),
+    local_block  : $ => seq(suffix('local'), optional($._block_name), optional($.body)),
+    rules_block  : $ => seq(suffix('rules'), optional($._block_name), optional($.body)),
 
     _block_name: $ => seq(
       immd(':'), alias(immd(NAME), $.block_name),
@@ -91,21 +98,21 @@ module.exports = grammar({
     //
     // Block directives
     // ----------------
-    use_block       : $ => seq(suffix('!use')       , optional($._block_name)),
-    max_block       : $ => seq(suffix('!max')       , optional($.block_list)) ,
-    maxnmatch_block : $ => seq(suffix('!maxnmatch') , optional($.block_list)) ,
-    types_block     : $ => seq(suffix('!types')     , optional($.block_list)) ,
-    getstate_block  : $ => seq(suffix('!getstate')  , optional($.block_list)) ,
-    stags_block     : $ => seq(suffix('!stags')     , optional($.block_list)  , repeat($._tag_directive)) ,
-    mtags_block     : $ => seq(suffix('!mtags')     , optional($.block_list)  , repeat($._tag_directive)) ,
+    use_block       : $ => seq(suffix('use')       , optional($._block_name)),
+    max_block       : $ => seq(suffix('max')       , optional($.block_list)) ,
+    maxnmatch_block : $ => seq(suffix('maxnmatch') , optional($.block_list)) ,
+    types_block     : $ => seq(suffix('types')     , optional($.block_list)) ,
+    getstate_block  : $ => seq(suffix('getstate')  , optional($.block_list)) ,
+    stags_block     : $ => seq(suffix('stags')     , optional($.block_list)  , repeat($._tag_directive)) ,
+    mtags_block     : $ => seq(suffix('mtags')     , optional($.block_list)  , repeat($._tag_directive)) ,
 
-    include_block   : $ => seq(suffix('!include')   , / /, $._filename),
+    include_block   : $ => seq(suffix('include')   , / /, $._filename),
 
-    header_on_block : $ => seq(suffix(suffix('!header'),'on')),
-    header_off_block: $ => seq(suffix(suffix('!header'),'off')),
+    header_on_block : $ => seq(suffix(suffix('header'),'on')),
+    header_off_block: $ => seq(suffix(suffix('header'),'off')),
 
     // NOTE: Single token
-    ignore_block    : $ => token(seq(suffix('!ignore'), LEX_BLOCK_END)),
+    ignore_block    : $ => token(seq(suffix('ignore'), LEX_BLOCK_END)),
 
     block_list: $ => repeat1($._block_name),
 
@@ -300,7 +307,7 @@ module.exports = grammar({
     ),
 
     action: $ => seq(
-      '{', optional($.code_block), prec.dynamic(1,'}'),
+      '{', optional(alias($.code_block, $.host_lang)), prec.dynamic(1,'}'),
     ),
 
     code_block: $ => repeat1($._code_in_braces),
@@ -569,11 +576,5 @@ module.exports = grammar({
 // add suffix to string a after the ':' delimiter
 // default suffix is re2c
 function suffix(string, suffix='re2c') {
-  return seq(string, immd(':'), immd(suffix));
-}
-
-// add prefix to string a before the ':' delimiter
-// default prefix is re2c
-function prefix(string, prefix='re2c') {
-  return seq(prefix, immd(':'), immd(string));
+  return seq(immd(string), immd(':'), immd(suffix));
 }

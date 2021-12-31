@@ -64,7 +64,7 @@
       "required": false,
       "types": [
         {
-          "type": "code_block",
+          "type": "host_lang",
           "named": true
         }
       ]
@@ -196,11 +196,6 @@
   },
   {
     "type": "close",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "code_block",
     "named": true,
     "fields": {}
   },
@@ -624,6 +619,11 @@
     "fields": {}
   },
   {
+    "type": "host_lang",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "include",
     "named": true,
     "fields": {
@@ -1007,8 +1007,8 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": true,
+      "multiple": true,
+      "required": false,
       "types": [
         {
           "type": "getstate_block",
@@ -1024,6 +1024,10 @@
         },
         {
           "type": "header_on_block",
+          "named": true
+        },
+        {
+          "type": "host_lang",
           "named": true
         },
         {
@@ -2303,47 +2307,7 @@
     "named": false
   },
   {
-    "type": "!getstate",
-    "named": false
-  },
-  {
-    "type": "!header",
-    "named": false
-  },
-  {
     "type": "!include",
-    "named": false
-  },
-  {
-    "type": "!local",
-    "named": false
-  },
-  {
-    "type": "!max",
-    "named": false
-  },
-  {
-    "type": "!maxnmatch",
-    "named": false
-  },
-  {
-    "type": "!mtags",
-    "named": false
-  },
-  {
-    "type": "!re2c",
-    "named": false
-  },
-  {
-    "type": "!rules",
-    "named": false
-  },
-  {
-    "type": "!stags",
-    "named": false
-  },
-  {
-    "type": "!types",
     "named": false
   },
   {
@@ -2364,6 +2328,10 @@
   },
   {
     "type": "*",
+    "named": false
+  },
+  {
+    "type": "*/",
     "named": false
   },
   {
@@ -2388,6 +2356,10 @@
   },
   {
     "type": "/",
+    "named": false
+  },
+  {
+    "type": "/*!",
     "named": false
   },
   {
@@ -2484,11 +2456,11 @@
   },
   {
     "type": "default",
-    "named": false
+    "named": true
   },
   {
     "type": "default",
-    "named": true
+    "named": false
   },
   {
     "type": "define",
@@ -2535,6 +2507,10 @@
     "named": false
   },
   {
+    "type": "getstate",
+    "named": false
+  },
+  {
     "type": "hex_digit",
     "named": true
   },
@@ -2549,6 +2525,10 @@
   {
     "type": "ignore_block",
     "named": true
+  },
+  {
+    "type": "include",
+    "named": false
   },
   {
     "type": "indent",
@@ -2571,11 +2551,27 @@
     "named": false
   },
   {
+    "type": "local",
+    "named": false
+  },
+  {
     "type": "match-empty",
     "named": false
   },
   {
     "type": "match-none",
+    "named": false
+  },
+  {
+    "type": "max",
+    "named": false
+  },
+  {
+    "type": "maxnmatch",
+    "named": false
+  },
+  {
+    "type": "mtags",
     "named": false
   },
   {
@@ -2607,11 +2603,19 @@
     "named": false
   },
   {
+    "type": "rules",
+    "named": false
+  },
+  {
     "type": "sentinel",
     "named": false
   },
   {
     "type": "separator",
+    "named": false
+  },
+  {
+    "type": "stags",
     "named": false
   },
   {
@@ -2628,6 +2632,14 @@
   },
   {
     "type": "tags",
+    "named": false
+  },
+  {
+    "type": "types",
+    "named": false
+  },
+  {
+    "type": "use",
     "named": false
   },
   {
