@@ -1,50 +1,5 @@
-;;
-;; Punctuations
-;; ============
-[
-  ":"
-  ";"
-  ","
-  "-"
-] @punctuation.delimiter
+; Namespaces
 
-[
-  "="
-  "=>"
-  ":=>"
-  "/"
-  "|"
-  "\\"
-  "->"
-  "^"
-] @operator
-
-[
-  "*"
-  "+"
-  "?"
-] @repeat
-
-[
-  "{" "}"
-  "[" "]"
-  "(" ")"
-  "<" ">"
-] @punctuation.bracket
-
-(repetition
-  (limits
-    ["{" "}"] @clean @repeat))
-
-[
-  "!"
-  "@"
-  "#"
-] @punctuation.special
-
-;;
-;; Keywords
-;; ========
 [
   "re2c"
   "re2c"
@@ -52,51 +7,14 @@
   "rules"
 ] @namespace
 
-[
-  "max"
-  "maxnmatch"
-  "mtags"
-  "stags"
-  "getstate"
-; "header"
-] @keyword
+; Includes
 
 [
   "!use"
   "!include"
 ] @include
 
-(linedir) @constant.macro
-
-;;
-;; Constants
-;; =========
-[
-  "ignore"
-  "substitute"
-  "fail"
-  "default"
-  "custom"
-  "match-empty"
-  "match-none"
-  "error"
-  "functions"
-  "free-form"
-  "format"
-  "separator"
-] @constant.builtin
-
-[
-  "." @clean
-  (default)
-  (end_of_input)
-] @constant.macro
-
-(field_expression
-  "." @clean @operator)
-
-(condition
-  (any) @clean @constant.macro)
+; Keywords
 
 [
   "flags"
@@ -118,11 +36,68 @@
   "condenumprefix"
   "labelprefix"
   "startlabel"
+  "posix-captures"
+  "max"
+  "maxnmatch"
+  "mtags"
+  "stags"
+  "header"
+  "getstate"
 ] @keyword
 
-;;
-;; Names
-;; =============
+[
+  "*"
+  "+"
+  "?"
+] @repeat
+
+; Constants
+
+[
+  "ignore"
+  "substitute"
+  "fail"
+  "default"
+  "custom"
+  "match-empty"
+  "match-none"
+  "error"
+  "functions"
+  "free-form"
+  "format"
+  "separator"
+] @constant.builtin
+
+(linedir) @constant.macro
+
+; Operators
+
+[
+  "="
+  "=>"
+  ":=>"
+  "/"
+  "|"
+  "\\"
+  "->"
+  "^"
+] @operator
+
+[
+  "."
+  (default)
+  (end_of_input)
+] @constant.macro
+
+(field_expression
+  "." @operator)
+
+(condition
+  (any) @constant.macro)
+
+
+; Names
+
 (name) @type
 
 (block_name) @constant
@@ -131,25 +106,16 @@
 
 (option_name) @constant.builtin
 
-((option_name) @clean @constant.macro
- (#match? @clean "^YY" ))
+((option_name) @constant.macro
+ (#match? @constant.macro "^YY"))
 
 (field_expression
   argument: (identifier) @variable)
 
 (field_identifier) @property
 
-;;
-;; Configurations
-;; ==============
-(define
-  option: (option_name) @_c
-   value: (dstring) @type
-   (#eq? @_c "YYCTYPE"))
+; Literals
 
-;;
-;; Literals
-;; ========
 (regex) @string.regex
 
 [
@@ -175,12 +141,50 @@
   (mtag)
 ] @property
 
-;;
-;; Comments and error
-;; ==================
+; Configurations
+
+(define
+  option: (option_name) @_yy
+  value: (dstring) @type
+  (#eq? @_yy "YYCTYPE")
+  (#offset! @type 0 1 0 -1))
+
+(set_header
+  value: (dstring) @string.special @text.underline)
+
+(host_lang) @none
+
+; Punctuation
+
+[
+  ":"
+  ";"
+  ","
+  "-"
+] @punctuation.delimiter
+
+[
+  "{" "}"
+  "[" "]"
+  "(" ")"
+  "<" ">"
+] @punctuation.bracket
+
+(repetition
+  (limits
+    ["{" "}"] @punctuation.bracket))
+
+[
+  "!"
+  "@"
+  "#"
+] @punctuation.special
+
+; Comments and error
+
 [
   (comment)
   (ignore_block)
-] @comment
+] @comment @spell
 
 (ERROR) @error
