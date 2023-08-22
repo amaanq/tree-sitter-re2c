@@ -329,11 +329,19 @@
           "named": true
         },
         {
+          "type": "set_header",
+          "named": true
+        },
+        {
           "type": "set_indent",
           "named": true
         },
         {
           "type": "set_label",
+          "named": true
+        },
+        {
+          "type": "set_posixcaptures",
           "named": true
         },
         {
@@ -1579,6 +1587,54 @@
     }
   },
   {
+    "type": "set_header",
+    "named": true,
+    "fields": {
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "api_style",
+            "named": true
+          },
+          {
+            "type": "dstring",
+            "named": true
+          },
+          {
+            "type": "empty_class_conf",
+            "named": true
+          },
+          {
+            "type": "encoding_policy",
+            "named": true
+          },
+          {
+            "type": "field_expression",
+            "named": true
+          },
+          {
+            "type": "input_conf",
+            "named": true
+          },
+          {
+            "type": "name",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "sstring",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "set_indent",
     "named": true,
     "fields": {
@@ -1670,6 +1726,54 @@
           }
         ]
       },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "api_style",
+            "named": true
+          },
+          {
+            "type": "dstring",
+            "named": true
+          },
+          {
+            "type": "empty_class_conf",
+            "named": true
+          },
+          {
+            "type": "encoding_policy",
+            "named": true
+          },
+          {
+            "type": "field_expression",
+            "named": true
+          },
+          {
+            "type": "input_conf",
+            "named": true
+          },
+          {
+            "type": "name",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "sstring",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "set_posixcaptures",
+    "named": true,
+    "fields": {
       "value": {
         "multiple": false,
         "required": true,
@@ -1894,7 +1998,7 @@
       },
       "option": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "option_name",
@@ -2456,11 +2560,11 @@
   },
   {
     "type": "default",
-    "named": true
+    "named": false
   },
   {
     "type": "default",
-    "named": false
+    "named": true
   },
   {
     "type": "define",
@@ -2508,6 +2612,10 @@
   },
   {
     "type": "getstate",
+    "named": false
+  },
+  {
+    "type": "header",
     "named": false
   },
   {
@@ -2593,6 +2701,10 @@
   {
     "type": "option_name",
     "named": true
+  },
+  {
+    "type": "posix-captures",
+    "named": false
   },
   {
     "type": "quote",
