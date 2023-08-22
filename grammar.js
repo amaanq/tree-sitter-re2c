@@ -1,7 +1,18 @@
+/**
+ * @file Re2c grammar for tree-sitter
+ * @author Alexandre Muller <muller@outlook.com>
+ * @author Amaan Qureshi <amaanq12@gmail.com>
+ * @license MIT
+ */
+
+/* eslint-disable arrow-parens */
+/* eslint-disable camelcase */
+/* eslint-disable-next-line spaced-comment */
+/// <reference types="tree-sitter-cli/dsl" />
+// @ts-check
+
 const NAME = /[a-zA-Z_][a-zA-Z0-9_]*/;
 const LEX_BLOCK_END = /([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*/;
-
-const immd = (x) => token.immediate(x);
 
 module.exports = grammar({
   name: 're2c',
@@ -29,7 +40,7 @@ module.exports = grammar({
     $._empty,
     $._char_cls_expr,
     $._bracket_literal,
-    $._linenum
+    $._linenum,
   ],
 
   conflicts: $ => [
@@ -56,17 +67,16 @@ module.exports = grammar({
 
   supertypes: $ => [
     $._atom,
-    $._escape
+    $._escape,
   ],
 
   rules: {
-
     re2c: $ => repeat(choice(
       $.host_lang,
       $._block,
     )),
 
-    host_lang: $ => token(/([^\/]|\/[^*]|\/\*[^!])+/),
+    host_lang: $ => token(/([^/]|\/[^*]|\/\*[^!])+/),
 
     _block: $ => seq(
       '\/*!',
@@ -84,40 +94,40 @@ module.exports = grammar({
         $.header_off_block,
         $.ignore_block,
       ),
-      '*\/'
+      '*\/',
     ),
 
-    global_block : $ => seq(immd('re2c'),    optional($._block_name), optional($.body)),
-    local_block  : $ => seq(suffix('local'), optional($._block_name), optional($.body)),
-    rules_block  : $ => seq(suffix('rules'), optional($._block_name), optional($.body)),
+    global_block: $ => seq(token.immediate('re2c'), optional($._block_name), optional($.body)),
+    local_block: $ => seq(suffix('local'), optional($._block_name), optional($.body)),
+    rules_block: $ => seq(suffix('rules'), optional($._block_name), optional($.body)),
 
     _block_name: $ => seq(
-      immd(':'), alias(immd(NAME), $.block_name),
+      token.immediate(':'), alias(token.immediate(NAME), $.block_name),
     ),
 
     //
     // Block directives
     // ----------------
-    use_block       : $ => seq(suffix('use')       , optional($._block_name)),
-    max_block       : $ => seq(suffix('max')       , optional($.block_list)) ,
-    maxnmatch_block : $ => seq(suffix('maxnmatch') , optional($.block_list)) ,
-    types_block     : $ => seq(suffix('types')     , optional($.block_list)) ,
-    getstate_block  : $ => seq(suffix('getstate')  , optional($.block_list)) ,
-    stags_block     : $ => seq(suffix('stags')     , optional($.block_list)  , repeat($._tag_directive)) ,
-    mtags_block     : $ => seq(suffix('mtags')     , optional($.block_list)  , repeat($._tag_directive)) ,
+    use_block: $ => seq(suffix('use'), optional($._block_name)),
+    max_block: $ => seq(suffix('max'), optional($.block_list)),
+    maxnmatch_block: $ => seq(suffix('maxnmatch'), optional($.block_list)),
+    types_block: $ => seq(suffix('types'), optional($.block_list)),
+    getstate_block: $ => seq(suffix('getstate'), optional($.block_list)),
+    stags_block: $ => seq(suffix('stags'), optional($.block_list), repeat($._tag_directive)),
+    mtags_block: $ => seq(suffix('mtags'), optional($.block_list), repeat($._tag_directive)),
 
-    include_block   : $ => seq(suffix('include')   , / /, $._filename),
+    include_block: $ => seq(suffix('include'), / /, $._filename),
 
-    header_on_block : $ => seq(suffix(suffix('header'),'on')),
-    header_off_block: $ => seq(suffix(suffix('header'),'off')),
+    header_on_block: $ => seq(suffix(suffix('header'), 'on', true)),
+    header_off_block: $ => seq(suffix(suffix('header'), 'off', true)),
 
     // NOTE: Single token
-    ignore_block    : $ => token(seq(suffix('ignore'), LEX_BLOCK_END)),
+    ignore_block: $ => token(seq(suffix('ignore'), LEX_BLOCK_END)),
 
     block_list: $ => repeat1($._block_name),
 
     // LINT. Shall be dstring
-    _filename: $ => field('filename',$._string),
+    _filename: $ => field('filename', $._string),
 
     // LINT: Shall be dstring
     _tag_directive: $ => choice(
@@ -126,11 +136,11 @@ module.exports = grammar({
     ),
 
     format_directive: $ => seq(
-      'format', '=', field('format', $._string), ';'
+      'format', '=', field('format', $._string), ';',
     ),
 
     separator_directive: $ => seq(
-      'separator', '=', field('separator', $._string), ';'
+      'separator', '=', field('separator', $._string), ';',
     ),
 
     //
@@ -141,7 +151,7 @@ module.exports = grammar({
       $.configuration,
       $._rule,
       $._directive,
-      $.linedir
+      $.linedir,
     )),
 
     //
@@ -150,7 +160,7 @@ module.exports = grammar({
     // LINT: Cannot be recursive
     // LINT: Redefinition is an error
     named_definition: $ => seq(
-      field('name', $._name), '=', field('value', $.regex), ';'
+      field('name', $._name), '=', field('value', $.regex), ';',
     ),
 
     _name: $ => alias($.identifier, $.name),
@@ -160,7 +170,7 @@ module.exports = grammar({
     // =============
     // Loads of oportunity to LINT.
     configuration: $ => seq(
-      're2c', immd(':'),
+      're2c', token.immediate(':'),
       choice(
         $.set_flags,
         $.define,
@@ -180,41 +190,45 @@ module.exports = grammar({
         $.set_condprefix,
         $.set_condenumprefix,
         $.set_startlabel,
+        $.set_posixcaptures,
+        $.set_header,
       ),
-      ';'
+      ';',
     ),
 
     _option_name: $ => seq(
-      immd(':'),
-      field('option', alias(immd(/[a-zA-Z0-9_:-]+/), $.option_name)),
+      token.immediate(':'),
+      field('option', alias(token.immediate(/[a-zA-Z0-9_:-]+/), $.option_name)),
       optional(seq(
-        choice(immd(':'), immd('@')),
-        field('field', alias(immd(/[a-zA-Z0-9_:-]+/), $.option_name)),
+        choice(token.immediate(':'), token.immediate('@')),
+        field('field', alias(token.immediate(/[a-zA-Z0-9_:-]+/), $.option_name)),
       )),
     ),
 
-    set_flags          : $ => seq(immd('flags')    , $._option_name , '=' , $._conf_value),
-    define             : $ => seq(immd('define')   , $._option_name , '=' , $._conf_value),
-    set_cond           : $ => seq(immd('cond')     , $._option_name , '=' , $._conf_value),
-    set_label          : $ => seq(immd('label')    , $._option_name , '=' , $._conf_value),
-    set_variable       : $ => seq(immd('variable') , $._option_name , '=' , $._conf_value),
-    set_yych           : $ => seq(immd('yych')     , $._option_name , '=' , $._conf_value),
-    set_state          : $ => seq(immd('state')    , $._option_name , '=' , $._conf_value),
-    set_yybm           : $ => seq(immd('yybm')     , $._option_name , '=' , $._conf_value),
-    set_cgoto          : $ => seq(immd('cgoto')    , $._option_name , '=' , $._conf_value),
-    set_api            : $ => seq(immd('api')      , $._option_name , '=' , $._conf_value),
-    set_tags           : $ => seq(immd('tags')     , $._option_name , '=' , $._conf_value),
-    set_indent         : $ => seq(immd('indent')   , $._option_name , '=' , $._conf_value),
-    set_yyfill         : $ => seq(immd('yyfill')   , $._option_name , '=' , $._conf_value),
+    set_flags: $ => seq(token.immediate('flags'), $._option_name, '=', $._conf_value),
+    define: $ => seq(token.immediate('define'), $._option_name, '=', $._conf_value),
+    set_cond: $ => seq(token.immediate('cond'), $._option_name, '=', $._conf_value),
+    set_label: $ => seq(token.immediate('label'), $._option_name, '=', $._conf_value),
+    set_variable: $ => seq(token.immediate('variable'), $._option_name, '=', $._conf_value),
+    set_yych: $ => seq(token.immediate('yych'), $._option_name, '=', $._conf_value),
+    set_state: $ => seq(token.immediate('state'), $._option_name, '=', $._conf_value),
+    set_yybm: $ => seq(token.immediate('yybm'), $._option_name, '=', $._conf_value),
+    set_cgoto: $ => seq(token.immediate('cgoto'), $._option_name, '=', $._conf_value),
+    set_api: $ => seq(token.immediate('api'), $._option_name, '=', $._conf_value),
+    set_tags: $ => seq(token.immediate('tags'), optional($._option_name), '=', $._conf_value),
+    set_indent: $ => seq(token.immediate('indent'), $._option_name, '=', $._conf_value),
+    set_yyfill: $ => seq(token.immediate('yyfill'), $._option_name, '=', $._conf_value),
     // configurations without options
-    set_eof            : $ => seq(immd('eof')                       , '=' , $._conf_value) ,
-    set_sentinel       : $ => seq(immd('sentinel')                  , '=' , $._conf_value) ,
-    set_condprefix     : $ => seq(immd('condprefix')                , '=' , $._conf_value) ,
-    set_condenumprefix : $ => seq(immd('condenumprefix')            , '=' , $._conf_value) ,
-    set_labelprefix    : $ => seq(immd('labelprefix')               , '=' , $._conf_value) ,
-    set_startlabel     : $ => seq(immd('startlabel')                , '=' , $._conf_value) ,
+    set_eof: $ => seq(token.immediate('eof'), '=', $._conf_value),
+    set_sentinel: $ => seq(token.immediate('sentinel'), '=', $._conf_value),
+    set_condprefix: $ => seq(token.immediate('condprefix'), '=', $._conf_value),
+    set_condenumprefix: $ => seq(token.immediate('condenumprefix'), '=', $._conf_value),
+    set_labelprefix: $ => seq(token.immediate('labelprefix'), '=', $._conf_value),
+    set_startlabel: $ => seq(token.immediate('startlabel'), '=', $._conf_value),
+    set_posixcaptures: $ => seq(token.immediate('posix-captures'), '=', $._conf_value),
+    set_header: $ => seq(token.immediate('header'), '=', $._conf_value),
 
-    _conf_value: $ =>  field('value',choice(
+    _conf_value: $ => field('value', choice(
       $.encoding_policy,
       $.input_conf,
       $.empty_class_conf,
@@ -231,7 +245,7 @@ module.exports = grammar({
     field_expression: $ => seq(
       field('argument', $.identifier),
       field('operator', choice('.', '->')),
-      field('field', $._field_identifier)
+      field('field', $._field_identifier),
     ),
 
     _field_identifier: $ => alias($.identifier, $.field_identifier),
@@ -247,7 +261,7 @@ module.exports = grammar({
 
     input_conf: $ => choice(
       'default',
-      'custom'
+      'custom',
     ),
 
     empty_class_conf: $ => choice(
@@ -258,7 +272,7 @@ module.exports = grammar({
 
     api_style: $ => choice(
       'functions',
-      'free-form'
+      'free-form',
     ),
 
     //
@@ -266,7 +280,7 @@ module.exports = grammar({
     // ====
     _rule: $ => choice(
       $.ordinary_rule,
-      $.conditional_rule
+      $.conditional_rule,
     ),
 
     ordinary_rule: $ => choice(
@@ -274,25 +288,25 @@ module.exports = grammar({
     ),
 
     conditional_rule: $ => choice(
-      seq($.condition, $.pattern,             $.action),
+      seq($.condition, $.pattern, $.action),
       seq($.condition, $.pattern, $.shortcut, $.action),
-      seq($.condition, $.pattern, $.shortcut          ),
+      seq($.condition, $.pattern, $.shortcut),
       // LINT: Special cases:
-      seq($.condition,                        $.action),
-      seq($.condition,            $.shortcut, $.action),
-      seq($.condition,            $.shortcut          ),
+      seq($.condition, $.action),
+      seq($.condition, $.shortcut, $.action),
+      seq($.condition, $.shortcut),
     ),
 
     shortcut: $ => choice(
-      seq( '=>', field('condition',$._label)),
-      seq(':=>', field('condition',$._label)),
+      seq('=>', field('condition', $._label)),
+      seq(':=>', field('condition', $._label)),
     ),
 
     _label: $ => alias($.identifier, $.label),
 
     condition: $ => choice(
-      seq('<',     optional($._clist), '>'),
-      seq('<','!', optional($._clist), '>'),
+      seq('<', optional($._clist), '>'),
+      seq('<', '!', optional($._clist), '>'),
     ),
 
     _clist: $ => choice(
@@ -303,11 +317,11 @@ module.exports = grammar({
     pattern: $ => choice(
       $.regex,
       alias('*', $.default),
-      alias('$', $.end_of_input)
+      alias('$', $.end_of_input),
     ),
 
     action: $ => seq(
-      '{', optional(alias($.code_block, $.host_lang)), prec.dynamic(1,'}'),
+      '{', optional(alias($.code_block, $.host_lang)), prec.dynamic(1, '}'),
     ),
 
     code_block: $ => repeat1($._code_in_braces),
@@ -320,6 +334,8 @@ module.exports = grammar({
       seq(/[^{}"'\/]+/),
       seq(/\\[^{}"'\/]/),
       seq('{', repeat($._code_in_braces), optional('}')),
+      // Rust lifetimes
+      /'\w+/,
     ),
 
     //
@@ -327,15 +343,15 @@ module.exports = grammar({
     // ==========
     _directive: $ => choice(
       $.use,
-      $.include
+      $.include,
     ),
 
     use: $ => seq(
-      '!use', $._block_name, ';'
+      '!use', $._block_name, ';',
     ),
 
     include: $ => seq(
-      '!include', $._filename, ';'
+      '!include', $._filename, ';',
     ),
 
     //
@@ -343,49 +359,49 @@ module.exports = grammar({
     // ===================
     regex: $ => choice(
       $.lookahead,
-      $._pattern_expr
+      $._pattern_expr,
     ),
 
     lookahead: $ => seq(
-      field('expr',$._pattern_expr),
-      field('operator','/'),
-      field('lookahead',$._pattern_expr)
+      field('expr', $._pattern_expr),
+      field('operator', '/'),
+      field('lookahead', $._pattern_expr),
     ),
 
     _pattern_expr: $ => choice(
       $.alternation,
-      $._alt_expr
+      $._alt_expr,
     ),
 
     // alternation as a list
     alternation: $ => seq(
-      repeat1(seq($._branch, field('operator','|'))), $._branch
+      repeat1(seq($._branch, field('operator', '|'))), $._branch,
     ),
 
     _branch: $ => field(
       'branch',
       choice(
         $._alt_expr,
-        $._empty
+        $._empty,
       ),
     ),
 
-    _empty: $ => alias(token(prec(-0xFF,'')),$.empty),
+    _empty: $ => alias(token(prec(-0xFF, '')), $.empty),
 
     _alt_expr: $ => choice(
       $.difference,
-      $._dif_expr
+      $._dif_expr,
     ),
 
     difference: $ => prec.left(seq(
-      field('left',$._alt_expr),
-      field('operator','\\'),
-      field('right',$._alt_expr)
+      field('left', $._alt_expr),
+      field('operator', '\\'),
+      field('right', $._alt_expr),
     )),
 
     _dif_expr: $ => choice(
       $.concat,
-      $._cat_expr
+      $._cat_expr,
     ),
 
     // %right as posix regex
@@ -395,7 +411,7 @@ module.exports = grammar({
 
     _cat_expr: $ => choice(
       $.repetition,
-      $._atom
+      $._atom,
     ),
 
     repetition: $ => choice(
@@ -404,21 +420,21 @@ module.exports = grammar({
     ),
 
     close: $ => choice(
-      immd('*'),
-      immd('+'),
-      immd('?'),
+      token.immediate('*'),
+      token.immediate('+'),
+      token.immediate('?'),
     ),
 
     limits: $ => choice(
-      seq(immd('{'), $._mininum, immd(','), $._maximum, immd('}')),
-      seq(immd('{'), $._mininum, immd(','),             immd('}')),
-      seq(immd('{'), $._exactly,                        immd('}')),
+      seq(token.immediate('{'), $._mininum, token.immediate(','), $._maximum, token.immediate('}')),
+      seq(token.immediate('{'), $._mininum, token.immediate(','), token.immediate('}')),
+      seq(token.immediate('{'), $._exactly, token.immediate('}')),
     ),
 
     // LINT shall be positive
-    _mininum: $ => field('minimum', alias(immd(/[0-9]+/),$.number)),
-    _maximum: $ => field('maximum', alias(immd(/[0-9]+/),$.number)),
-    _exactly: $ => field('exactly', alias(immd(/[0-9]+/),$.number)),
+    _mininum: $ => field('minimum', alias(token.immediate(/[0-9]+/), $.number)),
+    _maximum: $ => field('maximum', alias(token.immediate(/[0-9]+/), $.number)),
+    _exactly: $ => field('exactly', alias(token.immediate(/[0-9]+/), $.number)),
 
     _atom: $ => choice(
       $.parenthesized, // not capture group
@@ -431,7 +447,7 @@ module.exports = grammar({
     ),
 
     parenthesized: $ => seq(
-      '(', $._pattern_expr, ')'
+      '(', $._pattern_expr, ')',
     ),
 
     //
@@ -439,38 +455,38 @@ module.exports = grammar({
     // ---------------
     character_class: $ => seq(
       '[',
-      optional(immd('^')),
+      optional(token.immediate('^')),
       optional($._bracket_literal),
       repeat($._char_cls_expr),
-      immd(']'),
+      token.immediate(']'),
     ),
 
-    _bracket_literal: $ => alias(immd(']'),$.literal),
+    _bracket_literal: $ => alias(token.immediate(']'), $.literal),
 
     _char_cls_expr: $ => choice(
       $.range,
-      $._codepoint
+      $._codepoint,
     ),
 
     range: $ => seq(
       field('from', $._codepoint),
-      alias(immd(/-/), '-'),
-      field('to'  , $._codepoint),
+      alias(token.immediate(/-/), '-'),
+      field('to', $._codepoint),
     ),
 
-    wildcard: $ => alias('.','.'), // WHY?
+    wildcard: $ => alias('.', '.'), // WHY?
 
     //
     // Literals
     // ========
     _codepoint: $ => choice(
       $.literal,
-      $._escape
+      $._escape,
     ),
 
     literal: $ => choice(
-      immd(prec(-1,/./)),
-      immd(/-/), // create conflict
+      token.immediate(prec(-1, /./)),
+      token.immediate(/-/), // create conflict
     ),
 
     //
@@ -498,7 +514,7 @@ module.exports = grammar({
     )),
 
     ctrl_code: $ => token(seq(
-      '\\', choice('a', 'b', 'f', 'n', 'r', 't', 'v')
+      '\\', choice('a', 'b', 'f', 'n', 'r', 't', 'v'),
     )),
 
     code_unit: $ => choice(
@@ -522,26 +538,26 @@ module.exports = grammar({
     _esc_oct: $ => choice(
       token(seq('\\', seq(/[0-2][0-7]{2}/))),
       // Improve error recovery. See note in _esc_hex
-      seq(token(seq('\\',/[0-2][0-7]{0,1}/)), $.oct_digit),
+      seq(token(seq('\\', /[0-2][0-7]{0,1}/)), $.oct_digit),
     ),
 
     // Should only be used in used on error recovery.
     // See note in _esc_hex
-    hex_digit: $ => immd(/[0-9a-fA-F]/),
-    oct_digit: $ => immd(/[0-7]/),
+    hex_digit: $ => token.immediate(/[0-9a-fA-F]/),
+    oct_digit: $ => token.immediate(/[0-7]/),
 
-    stag: $ => seq('@', immd(NAME)),
-    mtag: $ => seq('#', immd(NAME)),
+    stag: $ => seq('@', token.immediate(NAME)),
+    mtag: $ => seq('#', token.immediate(NAME)),
 
-    identifier: $ =>  /[a-zA-Z_][a-zA-Z0-9_]*/,
+    identifier: $ => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
     //
     // Numbers
     // =======
     number: $ => choice(
       '0',
-      seq('-', immd(/[1-9][0-9]*/)),
-      seq(          /[1-9][0-9]*/),
+      seq('-', token.immediate(/[1-9][0-9]*/)),
+      seq(/[1-9][0-9]*/),
     ),
 
     //
@@ -549,25 +565,25 @@ module.exports = grammar({
     // ========
     // From tree-sitter-c
     comment: $ => choice(
-      token(prec(2,seq('//', /(\\(.|\r?\n)|[^\\\n])*/))),
-      token(prec(-1,seq(
+      token(prec(2, seq('//', /(\\(.|\r?\n)|[^\\\n])*/))),
+      token(prec(-1, seq(
         '/*',
         /[^*]*\*+([^/*][^*]*\*+)*/,
-        '/'
-      )))
+        '/',
+      ))),
     ),
 
     linedir: $ => seq(
-      '#','line',
+      '#', 'line',
       $._filename,
       optional($._linenum),
-      /\r?\n/
+      /\r?\n/,
     ),
 
     // LINT: shall be positive
     _linenum: $ => field('linenum', $.number),
 
-  }
+  },
 
 });
 
@@ -575,6 +591,6 @@ module.exports = grammar({
 
 // add suffix to string a after the ':' delimiter
 // default suffix is re2c
-function suffix(string, suffix='re2c') {
-  return seq(immd(string), immd(':'), immd(suffix));
+function suffix(string, suffix = 're2c', nested = false) {
+  return seq(nested ? string : token.immediate(string), token.immediate(':'), token.immediate(suffix));
 }
