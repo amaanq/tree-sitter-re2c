@@ -2272,29 +2272,9 @@
           {
             "type": "SYMBOL",
             "name": "_alt_expr"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_empty"
           }
         ]
       }
-    },
-    "_empty": {
-      "type": "ALIAS",
-      "content": {
-        "type": "TOKEN",
-        "content": {
-          "type": "PREC",
-          "value": -255,
-          "content": {
-            "type": "STRING",
-            "value": ""
-          }
-        }
-      },
-      "named": true,
-      "value": "empty"
     },
     "_alt_expr": {
       "type": "CHOICE",
@@ -3388,7 +3368,6 @@
     "_esc_hex",
     "_esc_oct",
     "_clist",
-    "_empty",
     "_char_cls_expr",
     "_bracket_literal",
     "_linenum"
@@ -3398,4 +3377,3 @@
     "_escape"
   ]
 }
-

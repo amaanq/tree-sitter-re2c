@@ -37,7 +37,6 @@ module.exports = grammar({
     $._esc_hex,
     $._esc_oct,
     $._clist,
-    $._empty,
     $._char_cls_expr,
     $._bracket_literal,
     $._linenum,
@@ -382,11 +381,8 @@ module.exports = grammar({
       'branch',
       choice(
         $._alt_expr,
-        $._empty,
       ),
     ),
-
-    _empty: $ => alias(token(prec(-0xFF, '')), $.empty),
 
     _alt_expr: $ => choice(
       $.difference,

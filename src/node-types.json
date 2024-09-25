@@ -91,10 +91,6 @@
             "named": true
           },
           {
-            "type": "empty",
-            "named": true
-          },
-          {
             "type": "repetition",
             "named": true
           }
@@ -1013,6 +1009,7 @@
   {
     "type": "re2c",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -2569,10 +2566,6 @@
   {
     "type": "define",
     "named": false
-  },
-  {
-    "type": "empty",
-    "named": true
   },
   {
     "type": "end_of_input",
