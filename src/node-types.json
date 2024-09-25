@@ -504,11 +504,6 @@
     }
   },
   {
-    "type": "dstring",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "empty_class_conf",
     "named": true,
     "fields": {}
@@ -2336,11 +2331,6 @@
     }
   },
   {
-    "type": "sstring",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "stag",
     "named": true,
     "fields": {}
@@ -2568,6 +2558,10 @@
     "named": false
   },
   {
+    "type": "dstring",
+    "named": true
+  },
+  {
     "type": "end_of_input",
     "named": true
   },
@@ -2718,6 +2712,10 @@
   {
     "type": "separator",
     "named": false
+  },
+  {
+    "type": "sstring",
+    "named": true
   },
   {
     "type": "stags",

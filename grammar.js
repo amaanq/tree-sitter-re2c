@@ -328,10 +328,10 @@ module.exports = grammar({
     _code_in_braces: $ => choice(
       // comments are consumed by (comment) in this parser
       // so, there is no need to deal with them here
-      seq(/"([^"\\\n]|\\.)*"/),
-      seq(/'([^'\\\n]|\\.)*'/),
-      seq(/[^{}"'\/]+/),
-      seq(/\\[^{}"'\/]/),
+      /"([^"\\\n]|\\.)*"/,
+      /'([^'\\\n]|\\.)*'/,
+      /[^{}"'\/]+/,
+      /\\[^{}"'\/]/,
       seq('{', repeat($._code_in_braces), optional('}')),
       // Rust lifetimes
       /'\w+/,
@@ -488,8 +488,8 @@ module.exports = grammar({
     //
     // String
     // ------
-    dstring: $ => seq(/"([^\n\\"]|\\.)*"?/),
-    sstring: $ => seq(/'([^\n\\']|\\.)*'?/),
+    dstring: $ => /"([^\n\\"]|\\.)*"?/,
+    sstring: $ => /'([^\n\\']|\\.)*'?/,
 
     _string: $ => choice(
       $.dstring, // case sensitive
@@ -532,7 +532,7 @@ module.exports = grammar({
     ),
 
     _esc_oct: $ => choice(
-      token(seq('\\', seq(/[0-2][0-7]{2}/))),
+      token(seq('\\', /[0-2][0-7]{2}/)),
       // Improve error recovery. See note in _esc_hex
       seq(token(seq('\\', /[0-2][0-7]{0,1}/)), $.oct_digit),
     ),
@@ -553,7 +553,7 @@ module.exports = grammar({
     number: $ => choice(
       '0',
       seq('-', token.immediate(/[1-9][0-9]*/)),
-      seq(/[1-9][0-9]*/),
+      /[1-9][0-9]*/,
     ),
 
     //

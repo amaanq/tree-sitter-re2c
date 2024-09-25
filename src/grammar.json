@@ -2063,40 +2063,20 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "\"([^\"\\\\\\n]|\\\\.)*\""
-            }
-          ]
+          "type": "PATTERN",
+          "value": "\"([^\"\\\\\\n]|\\\\.)*\""
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "'([^'\\\\\\n]|\\\\.)*'"
-            }
-          ]
+          "type": "PATTERN",
+          "value": "'([^'\\\\\\n]|\\\\.)*'"
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "[^{}\"'\\/]+"
-            }
-          ]
+          "type": "PATTERN",
+          "value": "[^{}\"'\\/]+"
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "\\\\[^{}\"'\\/]"
-            }
-          ]
+          "type": "PATTERN",
+          "value": "\\\\[^{}\"'\\/]"
         },
         {
           "type": "SEQ",
@@ -2765,22 +2745,12 @@
       ]
     },
     "dstring": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "\"([^\\n\\\\\"]|\\\\.)*\"?"
-        }
-      ]
+      "type": "PATTERN",
+      "value": "\"([^\\n\\\\\"]|\\\\.)*\"?"
     },
     "sstring": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "'([^\\n\\\\']|\\\\.)*'?"
-        }
-      ]
+      "type": "PATTERN",
+      "value": "'([^\\n\\\\']|\\\\.)*'?"
     },
     "_string": {
       "type": "CHOICE",
@@ -3121,13 +3091,8 @@
                 "value": "\\"
               },
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "PATTERN",
-                    "value": "[0-2][0-7]{2}"
-                  }
-                ]
+                "type": "PATTERN",
+                "value": "[0-2][0-7]{2}"
               }
             ]
           }
@@ -3233,13 +3198,8 @@
           ]
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "[1-9][0-9]*"
-            }
-          ]
+          "type": "PATTERN",
+          "value": "[1-9][0-9]*"
         }
       ]
     },
